@@ -10,3 +10,7 @@
 
 <img src="https://mmbiz.qpic.cn/mmbiz_jpg/xgnSK85ibxltDpibdJ5Ss3ZggyCicwm1d3rBUHc3qJXUPp3YnGGtTEFOUZcfctDqKP0zZKDjC2UMWnhTHJ2SvDA9g/0?wx_fmt=jpeg" width="540" alt="首页"/>
 
+之前有用Github搭建过自己的博客，但是后面又荒废了。。。总想找个机会重温一下与Github的旧情，一拍脑门，就决定是你啦！----**剑指offer编程练习总结**
+
+如果对这个项目感兴趣，请点击一下Star， 项目会持续更新，感谢大家的支持。
+## 介绍
