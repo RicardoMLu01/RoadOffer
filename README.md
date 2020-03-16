@@ -7,5 +7,6 @@
 
 ---
 
-![](https://mmbiz.qpic.cn/mmbiz_jpg/xgnSK85ibxltDpibdJ5Ss3ZggyCicwm1d3rBUHc3qJXUPp3YnGGtTEFOUZcfctDqKP0zZKDjC2UMWnhTHJ2SvDA9g/0?wx_fmt=jpeg)
+
+<img src="https://mmbiz.qpic.cn/mmbiz_jpg/xgnSK85ibxltDpibdJ5Ss3ZggyCicwm1d3rBUHc3qJXUPp3YnGGtTEFOUZcfctDqKP0zZKDjC2UMWnhTHJ2SvDA9g/0?wx_fmt=jpeg" width="540" alt="首页"/>
 
