@@ -13,7 +13,7 @@
 ```
 ### 解法一　暴力法
 #### 解题思路
-这是最容易想到的，从左到右依次遍历整个二维数组，找到需要查找的数返回true，没找到就返回false。
+这是最容易想到的，从左到右依次遍历整个二维数组，找到需要查找的数返回 true，没找到就返回 false。
 ```C
 class Solution {
 public:
@@ -35,8 +35,80 @@ public:
     }
 };
 ```
-**时间复杂度**：O(M*N)
+**时间复杂度**：O(M*N)(统一说明，Ｍ代表行数，Ｎ代表列数，下同)
 **空间复杂度**：O(1)
 
 ### 解法二　左下／右上移动法
 #### 解题思路
+利用二维数组的性质，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
+这里以右上移动为例，左下移动类似。二维数组右上角的数 m 是该行最大的数，是该列最小的数。
+每次将 m 和目标值 target 比较：
+当 m < target，由于 m 已经是该行最大的元素，想要更大只有从列考虑，取值下移一位
+当 m > target，由于 m 已经是该列最小的元素，想要更小只有从行考虑，取值左移一位
+当 m = target，找到该值，返回 true
+```C
+public:
+    bool Find(int target, vector<vector<int> > array) {
+        int row,col;
+        row=array.size();
+        col=array[0].size();
+        if(row==0||col==0)
+            return false;
+        int i = 0;
+        int j = col-1;
+        while(i<row && j>=0){
+            if(array[i][j] < target){
+                i++;
+            }else if(array[i][j] > target){
+                j--;
+            }else{
+                return true;
+            }
+        }
+        return false;
+    }
+};
+```
+**时间复杂度**：O(M+N)
+**空间复杂度**：O(1)
+
+### 解法三　二分查找
+#### 解题思路
+从第一行开始，对每一行进行二分查找。如果找到 target 则返回 true，没找到就移动到下一行进行二分查找，直到查找到最后一行。
+```C
+class Solution {
+public:
+    bool Find(int target, vector<vector<int> > array) {
+        int row,col;
+        row=array.size();
+        col=array[0].size();
+        if(row==0||col==0)
+            return false;
+        for(int i=0;i<row;i++)
+        {
+            int low=0;
+            int high=col-1;
+            while(low<=high)
+            {
+                int mid=low+(high-low)/2;
+                if(target==array[i][mid])
+                {
+                    return true;
+                }
+                else if(target<array[i][mid])
+                {
+                    high=mid-1;
+                }
+                else
+                {
+                    low=mid+1;
+                }
+            }
+        }
+        return false;
+    }
+};
+```
+**时间复杂度**：O(MlogN)
+**空间复杂度**：O(1)
+
