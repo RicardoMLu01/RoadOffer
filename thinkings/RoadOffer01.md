@@ -117,7 +117,46 @@ public:
 
 ### 知识扩展
 1.题解中使用的是 C++ 的容器 vector 来操作数组，这种容器与平常使用的内置数组相比有什么优势呢？各自的应用场合是哪里？
+优势：vector 支持动态扩容，适用于数组长度不断改变的情况；内置数组什么都需要亲力亲为，经常会出现数组越界的情况，而 vector 可以使用迭代器避免；vector 支持直接拷贝和赋值，内置数组无法进行直接拷贝和赋值。
+劣势：vector 存储大量数据时效率比内置数组低，且在分配连续大量内存时可能会失败。
+
 2.题目已经给了一个特定顺序的数组，如何自己使用 vector 来实现？
+```C
+#include<stdio.h>
+#include<algorithm>
+#include<vector>
+#include<stdlib.h>
+#include<iostream>
+using namespace std;
+ 
+int main()
+{
+	vector<vector<int>> viA(10);
+	for (int i = 0; i < 10;i++)
+		for (int j = 0; j < 10; j++){
+			viA[i].push_back(rand()%100);
+		}
+	for (int i = 0; i < 10; i++){
+		for (int j = 0; j < 10; j++){
+			cout << viA[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	cout << "按行排序后的输出" << endl;
+	for (int i = 0; i < 10; i++){
+		sort(viA[i].begin(), viA[i].end());//默认为从小到大排序
+	}
+	for (int i = 0; i < 10; i++){
+		for (int j = 0; j < 10; j++){
+			cout << viA[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	while (1);
+		
+	return 0;
+}
+```
 ### 总结
 1.在数据量很大的情况下，三种常见解法的时间复杂度相比，解法二 < 解法三 < 解法一，换句话说，解法二最好，解法三次之，解法三最差。
 2.在做题的时候优先考虑边界问题，这样能更好地把问题考虑清楚。
