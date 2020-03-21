@@ -45,47 +45,49 @@ public:
     }
 };
 ```
-**时间复杂度**：O(M*N)(统一说明，Ｍ代表行数，Ｎ代表列数，下同)
+**时间复杂度**：O(N^2)
 
 **空间复杂度**：O(1)
 
-### 解法二　左下／右上移动法
+### 解法二　双指针从后往前遍历
 #### 解题思路
-利用二维数组的性质，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
-
-这里以右上移动为例，左下移动类似。二维数组右上角的数 m 是该行最大的数，是该列最小的数。
-
-每次将 m 和目标值 target 比较：
-
-当 m < target，由于 m 已经是该行最大的元素，想要更大只有从列考虑，取值下移一位
-
-当 m > target，由于 m 已经是该列最小的元素，想要更小只有从行考虑，取值左移一位
-
-当 m = target，找到该值，返回 true
+我们可以先遍历一次字符串，这样就能统计出字符串中空格的总数，并可以由此计算出替换之后的字符串的总长度。每替换一个空格，长度增加２，因此替换以后字符串的长度等于原来的长度加上２乘以空格数目。我们从字符串的后面开始复制和替换。首先准备两个指针：P1和P2。P1指向原始字符串的末尾，而P2指向替换之后的字符串的末尾。向前移动指针P1，逐个把它指向的字符复制到P2指向的位置，直到碰到第一个空格为止。碰到第一个空格之后，把P1向前移动１格，在P2之前插入“%20”，由于“%20”的长度为３，同时也要把P2向前移动３格。后面以此类推，直到P1和P2指向同一个位置，表明所有空格都已经替换完毕。
 ```C
+class Solution {
 public:
-    bool Find(int target, vector<vector<int> > array) {
-        int row,col;
-        row=array.size();
-        col=array[0].size();
-        if(row==0||col==0)
-            return false;
-        int i = 0;
-        int j = col-1;
-        while(i<row && j>=0){
-            if(array[i][j] < target){
-                i++;
-            }else if(array[i][j] > target){
-                j--;
-            }else{
-                return true;
-            }
+	void replaceSpace(char *str,int length) {
+        if(str==NULL || length<=0)
+            return;
+        int k=0,len=0;
+        int space_num=0;
+        while(str[k]!='\0')
+        {
+            len++;
+            if(str[k]==' ')
+                space_num++;
+            k++;
         }
-        return false;
+        int len_add=len+2*space_num;
+        if(len_add>length)	//确保长度不超过最大容量
+            return;
+        int index_orignal=len;
+        int index_new=len_add;
+        while(index_orignal>=0 && index_new>index_orignal)
+        {
+            if(str[index_orignal]==' ')
+            {
+                str[index_new--]='0';
+                str[index_new--]='2';
+                str[index_new--]='%';
+            }
+            else
+                str[index_new--]=str[index_orignal];
+            --index_orignal;
+        }
     }
 };
 ```
-**时间复杂度**：O(M+N)
+**时间复杂度**：O(N)
 
 **空间复杂度**：O(1)
 
