@@ -1,37 +1,47 @@
-# 二维数组中的查找
+# 替换空格
 ### 信息卡片
-- 时间：2020-03-16
-- 题目链接：[二维数组中的查找](https://www.nowcoder.com/practice/abc3fe2ce8e146608e868a70efebf62e?tpId=13&tqId=11154&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
-- tag：`search` `array`
+- 时间：2020-03-21
+- 题目链接：[替换空格](https://www.nowcoder.com/practice/4060ac7e3e404ad1a894ef3e17650423?tpId=13&tqId=11155&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+- tag：`string`
 ### 题目描述
 ```
-在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的
-
-顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样
-
-的一个二维数组和一个整数，判断数组中是否含有该整数。
+请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串
+为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
 ```
 ### 解法一　暴力法
 #### 解题思路
-这是最容易想到的，从左到右依次遍历整个二维数组，找到需要查找的数返回 true，没找到就返回 false。
+将字符串从前往后遍历，每遇到一个空格需要将后面所有字符后移两个单位，直到遍历结束。
 ```C
 class Solution {
 public:
-    bool Find(int target, vector<vector<int> > array) {
-        int row,col;
-        row=array.size();
-        col=array[0].size();
-        if(row==0||col==0)    //边界问题要考虑
-            return false;
-        for(int i=0;i<row;i++)
+	void replaceSpace(char *str,int length) {
+        if(str==NULL || length<=0)
+            return;
+        int k=0,len=0;
+        int space_num=0;
+        while(str[k]!='\0')
         {
-            for(int j=0;j<col;j++)
+            len++;
+            if(str[k]==' ')
+                space_num++;
+            k++;
+        }
+        int len_add=len+2*space_num;
+        if(len_add>=length)
+            return;
+        for(int i=0;i<len;i++)
+        {
+            if(str[i]==' ')
             {
-                if(array[i][j]==target)
-                    return true;
+                for(int j=len+1;j>=i+3;j--)
+                    str[j]=str[j-2];
+                str[i]='%';
+                str[i+1]='2';
+                str[i+2]='0';
+                len+=2;
+                i+=2;
             }
         }
-        return false;
     }
 };
 ```
