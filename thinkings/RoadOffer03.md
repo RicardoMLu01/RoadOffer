@@ -1,47 +1,28 @@
-# 替换空格
+# 从尾到头打印链表
 ### 信息卡片
-- 时间：2020-03-21
-- 题目链接：[替换空格](https://www.nowcoder.com/practice/4060ac7e3e404ad1a894ef3e17650423?tpId=13&tqId=11155&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
-- tag：`string`
+- 时间：2020-03-23
+- 题目链接：[从尾到头打印链表](https://www.nowcoder.com/practice/d0267f7f55b3412ba93bd35cfa8e8035?tpId=13&tqId=11156&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+- tag：`list`
 ### 题目描述
 ```
-请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串
-为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
+输入一个链表，按链表从尾到头的顺序返回一个ArrayList。
 ```
 ### 解法一　暴力法
 #### 解题思路
-将字符串从前往后遍历，每遇到一个空格需要将后面所有字符后移两个单位，直到遍历结束。
+简单粗暴，先遍历一遍链表，在遍历链表的同时将当前指针指向的值放入vector数组中，直到链表遍历完成。最后，使用reverse函数将vector数组进行反转。
 ```C
-class Solution {
 public:
-	void replaceSpace(char *str,int length) {
-        if(str==NULL || length<=0)
-            return;
-        int k=0,len=0;
-        int space_num=0;
-        while(str[k]!='\0')
+    vector<int> printListFromTailToHead(ListNode* head) {
+        vector<int>ArrayList;
+        if(!head || !head->next)
+            return {};
+        while(head)
         {
-            len++;
-            if(str[k]==' ')
-                space_num++;
-            k++;
+            ArrayList.push_back(head->val);
+            head=head->next;
         }
-        int len_add=len+2*space_num;
-        if(len_add>=length)
-            return;
-        int len_t=len+1;    //包含\0字符
-        for(int i=0;i<len_t;i++)
-        {
-            if(str[i]==' ')
-            {
-                for(int j=len_t+1;j>=i+3;j--)
-                    str[j]=str[j-2];
-                str[i]='%';
-                str[i+1]='2';
-                str[i+2]='0';
-                len_t+=2;
-            }
-        }
+        reverse(ArrayList.begin(),ArrayList.end());
+        return ArrayList;
     }
 };
 ```
@@ -55,35 +36,18 @@ public:
 ```C
 class Solution {
 public:
-	void replaceSpace(char *str,int length) {
-        if(str==NULL || length<=0)
-            return;
-        int k=0,len=0;
-        int space_num=0;
-        while(str[k]!='\0')
+    vector<int> printListFromTailToHead(ListNode* head) {
+        vector<int>ArrayList;
+        if(head)
         {
-            len++;
-            if(str[k]==' ')
-                space_num++;
-            k++;
-        }
-        int len_add=len+2*space_num;
-        if(len_add>length)	//确保长度不超过最大容量
-            return;
-        int index_orignal=len;
-        int index_new=len_add;
-        while(index_orignal>=0 && index_new>index_orignal)
-        {
-            if(str[index_orignal]==' ')
+            ArrayList.insert(ArrayList.begin(),head->val);
+            while(head->next)
             {
-                str[index_new--]='0';
-                str[index_new--]='2';
-                str[index_new--]='%';
+                ArrayList.insert(ArrayList.begin(),head->next->val);
+                head=head->next;
             }
-            else
-                str[index_new--]=str[index_orignal];
-            --index_orignal;
         }
+        return ArrayList;
     }
 };
 ```
@@ -91,7 +55,54 @@ public:
 
 **空间复杂度**：O(1)
 
-
+```C
+class Solution {
+public:
+    vector<int> printListFromTailToHead(ListNode* head) {
+        stack<ListNode*> stackNodes;
+        vector<int> res;
+        ListNode* p=head;
+        // 单链表元素依次入栈
+        while (p != NULL)
+        {
+            stackNodes.push(p);
+            p = p->next;
+        }
+        // 栈中的单链表元素依次出栈
+        while (!stackNodes.empty())
+        {
+            p=stackNodes.top();
+            res.push_back(p->val);
+            stackNodes.pop();
+        }
+         
+         
+        return res;
+    }
+};
+```
+```C
+class Solution {
+public:
+     
+    vector<int> printListFromTailToHead(struct ListNode* head) {
+        vector<int> vec;
+        printListFromTailToHead(head,vec);
+        return vec;
+    }
+    void printListFromTailToHead(struct ListNode* head,vector<int> &vec)
+    {
+        if(head!=nullptr)
+        {
+            if(head->next!=nullptr)
+            {
+                printListFromTailToHead(head->next,vec);
+            }
+            vec.push_back(head->val);
+        }
+    }
+};
+```
 ### 知识扩展
 
 ### 总结
