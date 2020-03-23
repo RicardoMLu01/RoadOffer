@@ -7,9 +7,9 @@
 ```
 输入一个链表，按链表从尾到头的顺序返回一个ArrayList。
 ```
-### 解法一　暴力法
+### 解法一　调用reverse函数
 #### 解题思路
-简单粗暴，先遍历一遍链表，在遍历链表的同时将当前指针指向的值放入vector数组中，直到链表遍历完成。最后，使用reverse函数将vector数组进行反转。
+这是一种简单粗暴的解法，先遍历一遍链表，在遍历链表的同时将当前指针指向的值放入vector数组中，直到链表遍历完成。最后，使用reverse函数将vector数组进行反转。
 ```C
 public:
     vector<int> printListFromTailToHead(ListNode* head) {
@@ -26,13 +26,11 @@ public:
     }
 };
 ```
-**时间复杂度**：O(N^2)
 
-**空间复杂度**：O(1)
 
-### 解法二　双指针从后往前遍历
+### 解法二　调用insert函数
 #### 解题思路
-我们可以先遍历一次字符串，这样就能统计出字符串中空格的总数，并可以由此计算出替换之后的字符串的总长度。每替换一个空格，长度增加２，因此替换以后字符串的长度等于原来的长度加上２乘以空格数目。我们从字符串的后面开始复制和替换。首先准备两个指针：P1和P2。P1指向原始字符串的末尾，而P2指向替换之后的字符串的末尾。向前移动指针P1，逐个把它指向的字符复制到P2指向的位置，直到碰到第一个空格为止。碰到第一个空格之后，把P1向前移动１格，在P2之前插入“%20”，由于“%20”的长度为３，同时也要把P2向前移动３格。后面以此类推，直到P1和P2指向同一个位置，表明所有空格都已经替换完毕。
+与解法一有些类似，依次从前往后遍历链表，在遍历链表的同时，调用vector的insert函数从头部插入此时链表指针指向的值。最后就得到了一个反转的数组。
 ```C
 class Solution {
 public:
@@ -51,40 +49,40 @@ public:
     }
 };
 ```
-**时间复杂度**：O(N)
 
-**空间复杂度**：O(1)
-
+### 解法三　调用栈
+#### 解题思路
+创建一个元素为指针类型的栈，来存放链表的指针。在遍历链表的同时将指针入栈，此时栈的底部是链表的第一个元素，栈顶是链表的最后一个元素。弹出栈的时候把指针指向的值放入vector数组里面。
 ```C
 class Solution {
 public:
     vector<int> printListFromTailToHead(ListNode* head) {
         stack<ListNode*> stackNodes;
-        vector<int> res;
+        vector<int> ArrayList;
         ListNode* p=head;
-        // 单链表元素依次入栈
         while (p != NULL)
         {
             stackNodes.push(p);
             p = p->next;
         }
-        // 栈中的单链表元素依次出栈
         while (!stackNodes.empty())
         {
             p=stackNodes.top();
-            res.push_back(p->val);
+            ArrayList.push_back(p->val);
             stackNodes.pop();
         }
-         
-         
-        return res;
+        return ArrayList;
     }
 };
 ```
+
+
+### 解法三　递归
+#### 解题思路
+递归的本质就是一个栈结构，可以用递归来实现。要实现反过来输出的链表，我们每访问到一个节点的时候，先递归输出它后面的节点，再输出该节点自身，这样就得到反转的链表。
 ```C
 class Solution {
 public:
-     
     vector<int> printListFromTailToHead(struct ListNode* head) {
         vector<int> vec;
         printListFromTailToHead(head,vec);
@@ -103,8 +101,7 @@ public:
     }
 };
 ```
-### 知识扩展
 
 ### 总结
 
-在合并两个数组（包括字符串）时，如果从前往后复制每个数字（或字符）则需要重复移动数字（或字符）多次，那么我们可以考虑从后往前复制，这样就能减少移动的次数，从而提高效率。
+解法四递归的方法看起来比较简洁，但是凡事都有利弊，当链表非常长的时候，就会导致函数调用的层级很深，从而有可能导致函数调用栈溢出。解法一、解法二、解法三要优于解法四。
