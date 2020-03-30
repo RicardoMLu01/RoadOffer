@@ -1,19 +1,24 @@
-## 二维数组中的查找
+## 重建二叉树
 ### 信息卡片
-- 时间：2020-03-16
-- 题目链接：[二维数组中的查找](https://www.nowcoder.com/practice/abc3fe2ce8e146608e868a70efebf62e?tpId=13&tqId=11154&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
-- tag：`search` `array`
+- 时间：2020-03-31
+- 题目链接：[重建二叉树](https://www.nowcoder.com/practice/8a19cbe657394eeaac2f6ea9b0f6fcf6?tpId=13&tqId=11157&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+- tag：`binary tree`
 ### 题目描述
 ```
-在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的
+输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历
 
-顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样
+和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}
 
-的一个二维数组和一个整数，判断数组中是否含有该整数。
+和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
 ```
 ### 解法一　暴力法
 #### 解题思路
-这是最容易想到的，从左到右依次遍历整个二维数组，找到需要查找的数返回 true，没找到就返回 false。
+由于前序遍历的第一个数总是树的根节点的值，扫描中序遍历的序列，我们可以知道根节点的值在中序遍历序列的位置，进而我们知道树的左子树的中序遍历序列即为根节点的值的左边序列，并且知道左子树的序列的长度， 树的右子树的中序遍历序列即为根节点的值的右边序列。由此左右子树的长度，我们可以从树的前序遍历序列中得到左右子树的前序遍历。接下来以递归的方式再处理左右子树。
+
+
+!(image)[https://mp.weixin.qq.com/cgi-bin/filepage?type=2&begin=0&count=12&token=950094278&lang=zh_CN]
+
+
 ```C
 class Solution {
 public:
