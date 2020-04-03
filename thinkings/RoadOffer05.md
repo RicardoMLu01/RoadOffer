@@ -14,31 +14,41 @@
 队列的特性是：“先入先出”，栈的特性是：“先入后出”
 
 当我们向模拟的队列插入数 a,b,c 时，假设插入的是 stack1，此时的栈情况为：
+
 栈 stack1：{a,b,c}
+
 栈 stack2：{}
 
 当需要弹出一个数，根据队列的"先进先出"原则，a 先进入，则 a 应该先弹出。但是此时 a 在 stack1 的最下面，将 stack1 中全部元素逐个弹出压入 stack2，现在可以正确的从 stack2 中弹出 a，此时的栈情况为：
+
 栈 stack1：{}
+
 栈 stack2：{c,b}
 
 继续弹出一个数，b 比 c 先进入"队列"，b 弹出，注意此时 b 在 stack2 的栈顶，可直接弹出，此时的栈情况为：
+
 栈 stack1：{}
+
 栈 stack2：{c}
 
 此时向模拟队列插入一个数 d，还是插入 stack1，此时的栈情况为：
+
 栈 stack1：{d}
+
 栈 stack2：{c}
 
 弹出一个数，c 比 d 先进入，c 弹出，注意此时 c 在 stack2 的栈顶，可直接弹出，此时的栈情况为：
+
 栈 stack1：{d}
+
 栈 stack2：{}
 
 根据上述栗子可得出结论：
 
-当插入时，直接插入 stack1
-当弹出时，当 stack2 不为空，弹出 stack2 栈顶元素，如果 stack2 为空，将 stack1 中的全部数逐个出栈入栈 stack2，再弹出 stack2 栈顶元素
+当插入时，直接插入 stack1。当弹出时，当 stack2 不为空，弹出 stack2 栈顶元素，如果 stack2 为空，将 stack1 中的全部数逐个出栈入栈 stack2，再弹出 stack2 栈顶元素.
 
-```C
+
+```C++
 class Solution
 {
 public:
@@ -85,26 +95,37 @@ private:
 队列的特性是：“先入先出”，栈的特性是：“先入后出”
 
 当我们向模拟的栈插入数 a,b,c 时，假设插入的是 queue1，此时的队列情况为(a 位于队列头部，c 位于队列尾部)：
+
 队列 queue1：{a,b,c}
+
 队列 queue2：{}
 
 当需要弹出一个数，根据栈的"先入后出"原则，最后被压入栈的 c 应该最先被弹出。由于 c 位于 queue1 的尾部，而我们每次只能从队列的头部删除元素，因此我们可以先从 queue1 中依次删除元素 a、b 并插入 queue2，再从 queue1 中删除元素 c。此时的栈情况为：
+
 队列 queue1：{}
+
 队列 queue2：{a,b}
 
 继续弹出一个数，将 a 放入 queue1 中，从 queue2 中删除元素 b。此时的栈情况为：
+
 队列 queue1：{a}
+
 队列 queue2：{}
 
 接下来往栈内压入一个元素 d。此时 queue1　已经有一个元素，把 d 插入 queue1的尾部。此时的栈情况为：
+
 队列 queue1：{a,d}
+
 队列 queue2：{}
 
 再从栈内弹出一个元素，那么此时被弹出的应该是最后被压入的 d。由于 d 位于 queue1 的尾部，我们先将 a 插入到 queue2，再从 queue1 中删除 d。
+
 队列 queue1：{}
+
 队列 queue2：{a}
 
-```C
+
+```C++
 class MyStack {
 public: /** Initialize your data structure here. */
     queue<int> q1,q2;
