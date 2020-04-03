@@ -76,50 +76,77 @@ private:
 
 
 ### 知识扩展
-1.题解中使用的是 C++ 的容器 vector 来操作数组，这种容器与平常使用的内置数组相比有什么优势呢？各自的应用场合是哪里？
-
-优势：vector 支持动态扩容，适用于数组长度不断改变的情况；内置数组什么都需要亲力亲为，经常会出现数组越界的情况，而 vector 可以使用迭代器避免；vector 支持直接拷贝和赋值，内置数组无法进行直接拷贝和赋值。
-
-劣势：vector 存储大量数据时效率比内置数组低，且在分配连续大量内存时可能会失败。
-
-2.题目已经给了一个特定顺序的数组，如何自己使用 vector 进行行或列排序？
-```C
-#include<stdio.h>
-#include<algorithm>
-#include<vector>
-#include<stdlib.h>
-#include<iostream>
-using namespace std;
- 
-int main()
-{
-	vector<vector<int>> viA(10);
-	for (int i = 0; i < 10;i++)
-		for (int j = 0; j < 10; j++){
-			viA[i].push_back(rand()%100);
-		}
-	for (int i = 0; i < 10; i++){
-		for (int j = 0; j < 10; j++){
-			cout << viA[i][j] << "\t";
-		}
-		cout << endl;
-	}
-	cout << "按行排序后的输出" << endl;
-	for (int i = 0; i < 10; i++){
-		sort(viA[i].begin(), viA[i].end());//默认为从小到大排序
-	}
-	for (int i = 0; i < 10; i++){
-		for (int j = 0; j < 10; j++){
-			cout << viA[i][j] << "\t";
-		}
-		cout << endl;
-	}
-	while (1);
-		
-	return 0;
-}
 ```
-### 总结
-1.在数据量很大的情况下，三种常见解法的时间复杂度相比，解法二 < 解法三 < 解法一，换句话说，解法二最好，解法三次之，解法三最差。
+用两个队列实现一个栈
+```
 
-2.在做题的时候优先考虑边界问题，这样能更好地把问题考虑清楚。
+#### 解题思路
+
+队列的特性是：“先入先出”，栈的特性是：“先入后出”
+
+当我们向模拟的栈插入数 a,b,c 时，假设插入的是 queue1，此时的队列情况为(a 位于队列头部，c 位于队列尾部)：
+队列 queue1：{a,b,c}
+队列 queue2：{}
+
+当需要弹出一个数，根据栈的"先入后出"原则，最后被压入栈的 c 应该最先被弹出。由于 c 位于 queue1 的尾部，而我们每次只能从队列的头部删除元素，因此我们可以先从 queue1 中依次删除元素 a、b 并插入 queue2，再从 queue1 中删除元素 c。此时的栈情况为：
+队列 queue1：{}
+队列 queue2：{a,b}
+
+继续弹出一个数，将 a 放入 queue1 中，从 queue2 中删除元素 b。此时的栈情况为：
+队列 queue1：{a}
+队列 queue2：{}
+
+接下来往栈内压入一个元素 d。此时 queue1　已经有一个元素，把 d 插入 queue1的尾部。此时的栈情况为：
+队列 queue1：{a,d}
+队列 queue2：{}
+
+再从栈内弹出一个元素，那么此时被弹出的应该是最后被压入的 d。由于 d 位于 queue1 的尾部，我们先将 a 插入到 queue2，再从 queue1 中删除 d。
+队列 queue1：{}
+队列 queue2：{a}
+
+```C
+class MyStack {
+public: /** Initialize your data structure here. */
+    queue<int> q1,q2;
+    MyStack() {   
+    }
+    /** Push element x onto stack. */
+    void push(int x) {
+        while(!q2.empty())
+        {
+            q1.push(q2.front());
+            q2.pop();
+        }
+        q2.push(x);
+        while(!q1.empty())
+        {
+            q2.push(q1.front());
+            q1.pop();
+        }
+    }
+    /** Removes the element on top of the stack and returns that element. */
+    int pop() {
+        int a=q2.front();
+        q2.pop();
+        return a;
+    }
+    /** Get the top element. */
+    int top() {
+        return q2.front();
+    }  
+    /** Returns whether the stack is empty. */
+    bool empty() {
+        return q2.empty();
+    }
+};
+ 
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack* obj = new MyStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * bool param_4 = obj->empty();
+ */
+```
+
